@@ -1,29 +1,3 @@
-const theme: Theme = {
-    sizes: {
-        toolbar: {
-            big: 4,
-            small: 2,
-        },
-        button: {
-            big: 7,
-            small: 7,
-        },
-    },
-}
-
-type Theme = {
-    sizes: {
-        toolbar: {
-            big: number
-            small: number
-        }
-        button: {
-            big: number
-            small: number
-        }
-    }
-}
-
 type Key = string | number
 
 type ThemeObject = {
@@ -64,6 +38,3 @@ const base = <T extends ThemeObject>() => <U extends keyof T>(key: U) => {
     }
     return wrapper<T[U]>()
 }
-
-const a = base<Theme>()('sizes')('button')('big')({ theme })
-console.log(a)
