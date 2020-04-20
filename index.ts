@@ -22,12 +22,13 @@ export const base = <T extends ThemeObject>() => <U extends keyof T>(
     key: U
 ) => {
     const keys = ['theme', key] as any[]
+    type Theme = {theme: T}
 
     const wrapper = <W>() => {
         function select(next: keyof W): Select<W[typeof next]>
-        function select(next: T): W
+        function select(next: Theme): W
         function select(next?: undefined): Select<W>
-        function select(next?: T | keyof W | undefined) {
+        function select(next?: Theme | keyof W | undefined) {
             if (!next) return wrapper<W>() as Select<W>
             if (isThemeObjectKey<W>(next)) {
                 keys.push(next)
