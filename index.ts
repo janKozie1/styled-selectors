@@ -6,6 +6,7 @@ type Select<Theme, W> = {
       ? Select<Theme,W[U]>
       : (theme: Theme) => W[U]
   (theme: Theme): W
+  (cb: (curent:W) => any): any
 }
 
 type ThemeObject = {
@@ -38,6 +39,7 @@ export const base = <T extends ThemeObject>() => <U extends keyof T>(
     const wrapper = <W>(keys: Key[]) => {
         function select(next: keyof W): Select<Theme,W[typeof next]>
         function select(next: Theme): W
+        function select(next: (current: W) => any): any
         function select<U extends Theme | keyof W>(next: U) {
             if (isThemeObjectKey<W>(next)) {
                 return wrapper<W[typeof next]>([...keys, next]) as Select<Theme,W[typeof next]>
