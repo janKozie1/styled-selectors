@@ -1,10 +1,7 @@
 type Key = string | number | symbol
 
 type Select<Theme, W> = {
-  <U extends keyof W>(key: U):
-    W[U] extends ThemeObject
-      ? Select<Theme,W[U]>
-      : (theme: Theme) => W[U]
+  <U extends keyof W>(key: U): Select<Theme, W[U]>
   (theme: Theme): W
   <T>(cb: (curent:W) => T): (theme: Theme) => T 
 }
@@ -59,26 +56,3 @@ export const base = <T extends ThemeObject>() => <U extends keyof T>(
     }
     return wrapper<T[U]>(keys)
 }
-
-const theme = {
-    colors: {
-        main: {
-            blue: {
-                dark: {
-                    1: '00008B',
-                },
-            },
-            red: {
-                light: {
-                    2: 'F8665E'
-                }
-            }
-        },
-    },
-    size: {
-        toolbar: {
-            big: 5,
-            small: 4,
-        }
-    }
-};

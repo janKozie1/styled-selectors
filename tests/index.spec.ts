@@ -55,9 +55,18 @@ describe('base', () => {
         expect(colors).toBe(theme.colors.main)
     })
 
-    it('accepts callbacks', () => {
-        const sizeWithRem = baseSelector('size')('toolbar')((sizes) => sizes.big + sizes.small + 'rem')({theme})
-        
-        expect(sizeWithRem).toBe('6rem')
+    describe('callbacks', () => {
+        it('accepts callbacks', () => {
+            const sizeWithRem = baseSelector('size')('toolbar')((sizes) => sizes.big + sizes.small + 'rem')({theme})
+            
+            expect(sizeWithRem).toBe('6rem')
+        })
+    
+        it('accepts callback on the last level', () => {
+            const lastLevel = baseSelector('size')('toolbar')('big')((big) => big + 'px')({theme})
+
+            expect(lastLevel).toBe('5px')
+        })
     })
+    
 })
