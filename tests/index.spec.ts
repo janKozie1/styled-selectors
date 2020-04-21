@@ -43,9 +43,9 @@ describe('base', () => {
         expect(red).toBe('F8665E')
     })
 
-    it('doesn\'t break without arguments', () => {
-        const darkBlueMainColor = baseSelector('colors')()('main')()('blue')()('dark')()(1)()({theme})
-        
-        expect(darkBlueMainColor).toBe('00008B')
+    it('can accept theme object at any point', () => {
+        const colors = baseSelector('colors')('main')({theme})
+
+        expect(colors).toBe(theme.colors.main)
     })
 })
