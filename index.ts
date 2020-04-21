@@ -6,11 +6,17 @@ type Select<Theme, W> = {
       ? Select<Theme,W[U]>
       : (theme: Theme) => W[U]
   (theme: Theme): W
-  (cb: (curent:W) => any): any
+  <T>(cb: (curent:W) => T): (theme: Theme) => T 
 }
 
 type ThemeObject = {
     [key in Key]: ThemeObject | any
+}
+
+type Callback<W> = (arg: W) => unknown
+
+const isCallback = <W>(thing: any): thing is Callback<W> => {
+    return thing && typeof thing === 'function'
 }
 
 const isThemeObjectKey = <T>(thing: any): thing is keyof T => {
@@ -39,8 +45,11 @@ export const base = <T extends ThemeObject>() => <U extends keyof T>(
     const wrapper = <W>(keys: Key[]) => {
         function select(next: keyof W): Select<Theme,W[typeof next]>
         function select(next: Theme): W
-        function select(next: (current: W) => any): any
+        function select<Z>(next: (current: W) => Z): (theme: Theme) => Z
         function select<U extends Theme | keyof W>(next: U) {
+            if (isCallback<W>(next)){
+                return (theme: Theme) => next(access<W>(keys, theme))
+            }
             if (isThemeObjectKey<W>(next)) {
                 return wrapper<W[typeof next]>([...keys, next]) as Select<Theme,W[typeof next]>
             }
@@ -50,3 +59,26 @@ export const base = <T extends ThemeObject>() => <U extends keyof T>(
     }
     return wrapper<T[U]>(keys)
 }
+
+const theme = {
+    colors: {
+        main: {
+            blue: {
+                dark: {
+                    1: '00008B',
+                },
+            },
+            red: {
+                light: {
+                    2: 'F8665E'
+                }
+            }
+        },
+    },
+    size: {
+        toolbar: {
+            big: 5,
+            small: 4,
+        }
+    }
+};

@@ -15,7 +15,13 @@ const theme = {
             }
         },
     },
-    size: 5
+    something: 'some value',
+    size: {
+        toolbar: {
+            big: 5,
+            small: 1
+        }
+    }
 };
 
 type Theme = typeof theme;
@@ -29,9 +35,9 @@ describe('base', () => {
     })
 
     it('works for shallow properities', () => {
-       const size =  baseSelector('size')({theme})
+       const size =  baseSelector('something')({theme})
 
-       expect(size).toBe(5)
+       expect(size).toBe('some value')
     })
 
     it('can branch off' , () => {
@@ -47,5 +53,11 @@ describe('base', () => {
         const colors = baseSelector('colors')('main')({theme})
 
         expect(colors).toBe(theme.colors.main)
+    })
+
+    it('accepts callbacks', () => {
+        const sizeWithRem = baseSelector('size')('toolbar')((sizes) => sizes.big + sizes.small + 'rem')({theme})
+        
+        expect(sizeWithRem).toBe('6rem')
     })
 })

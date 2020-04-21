@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1587479507008" clover="3.2.0">
-  <project timestamp="1587479507008" name="All files">
-    <metrics statements="13" coveredstatements="13" conditionals="11" coveredconditionals="10" methods="6" coveredmethods="6" elements="30" coveredelements="29" complexity="0" loc="13" ncloc="13" packages="1" files="1" classes="1"/>
-    <file name="index.ts" path="/home/jan/programming/styled-selectors/index.ts">
-      <metrics statements="13" coveredstatements="13" conditionals="11" coveredconditionals="10" methods="6" coveredmethods="6"/>
-      <line num="15" count="1" type="stmt"/>
-      <line num="16" count="17" type="cond" truecount="3" falsecount="0"/>
-      <line num="19" count="1" type="stmt"/>
-      <line num="20" count="23" type="stmt"/>
-      <line num="21" count="23" type="cond" truecount="2" falsecount="0"/>
-      <line num="28" count="1" type="stmt"/>
-      <line num="31" count="4" type="stmt"/>
-      <line num="34" count="4" type="stmt"/>
-      <line num="38" count="17" type="cond" truecount="2" falsecount="0"/>
-      <line num="39" count="12" type="stmt"/>
-      <line num="41" count="5" type="stmt"/>
-      <line num="43" count="16" type="stmt"/>
-      <line num="45" count="4" type="stmt"/>
+<coverage generated="1587499207269" clover="3.2.0">
+  <project timestamp="1587499207270" name="All files">
+    <metrics statements="18" coveredstatements="18" conditionals="16" coveredconditionals="15" methods="8" coveredmethods="8" elements="42" coveredelements="41" complexity="0" loc="18" ncloc="18" packages="1" files="1" classes="1"/>
+    <file name="index.ts" path="C:\Personal\Projects\styled-selectors\index.ts">
+      <metrics statements="18" coveredstatements="18" conditionals="16" coveredconditionals="15" methods="8" coveredmethods="8"/>
+      <line num="18" count="1" type="stmt"/>
+      <line num="19" count="19" type="cond" truecount="2" falsecount="0"/>
+      <line num="22" count="1" type="stmt"/>
+      <line num="23" count="18" type="cond" truecount="4" falsecount="0"/>
+      <line num="30" count="1" type="stmt"/>
+      <line num="31" count="26" type="stmt"/>
+      <line num="32" count="26" type="cond" truecount="2" falsecount="0"/>
+      <line num="39" count="1" type="stmt"/>
+      <line num="42" count="5" type="stmt"/>
+      <line num="45" count="5" type="stmt"/>
+      <line num="50" count="19" type="cond" truecount="2" falsecount="0"/>
+      <line num="51" count="1" type="stmt"/>
+      <line num="53" count="18" type="cond" truecount="2" falsecount="0"/>
+      <line num="54" count="13" type="stmt"/>
+      <line num="56" count="5" type="stmt"/>
+      <line num="58" count="18" type="stmt"/>
+      <line num="60" count="5" type="stmt"/>
+      <line num="63" count="1" type="stmt"/>
     </file>
   </project>
 </coverage>
