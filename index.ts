@@ -13,7 +13,11 @@ type ThemeObject = {
 }
 
 const isThemeObjectKey = <T>(thing: any): thing is keyof T => {
-    return thing && (typeof thing === 'number' || typeof thing === 'string')
+    return thing && (
+      typeof thing === 'number'
+      || typeof thing === 'string'
+      || typeof thing === 'symbol'
+    )
 }
 
 const access = <T>(keys: any, obj: any): T => {
