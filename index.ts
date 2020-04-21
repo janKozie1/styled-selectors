@@ -3,16 +3,16 @@ type Key = string | number | symbol
 type Select<Theme, W> = {
   <U extends keyof W>(key: U): Select<Theme, W[U]>
   (theme: Theme): W
-  <T>(cb: (curent:W) => T): (theme: Theme) => T 
+  <T>(cb: (curent:W, all: Theme & {[key in Key]: any}) => T): (theme: Theme) => T 
 }
 
 type ThemeObject = {
     [key in Key]: ThemeObject | any
 }
 
-type Callback<W> = (arg: W) => unknown
+type Callback<W, R> = (arg: W, arg2: R) => unknown
 
-const isCallback = <W>(thing: any): thing is Callback<W> => {
+const isCallback = <W, R>(thing: any): thing is Callback<W, R> => {
     return thing && typeof thing === 'function'
 }
 
@@ -42,10 +42,10 @@ export const base = <T extends ThemeObject>() => <U extends keyof T>(
     const wrapper = <W>(keys: Key[]) => {
         function select(next: keyof W): Select<Theme,W[typeof next]>
         function select(next: Theme): W
-        function select<Z>(next: (current: W) => Z): (theme: Theme) => Z
+        function select<Z>(next: (current: W, all: Theme & any) => Z): (theme: Theme) => Z
         function select<U extends Theme | keyof W>(next: U) {
-            if (isCallback<W>(next)){
-                return (theme: Theme) => next(access<W>(keys, theme))
+            if (isCallback<W, Theme>(next)){
+                return (theme: Theme) => next(access<W>(keys, theme), theme)
             }
             if (isThemeObjectKey<W>(next)) {
                 return wrapper<W[typeof next]>([...keys, next]) as Select<Theme,W[typeof next]>
