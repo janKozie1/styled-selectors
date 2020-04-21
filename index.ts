@@ -1,11 +1,11 @@
 type Key = string | number | symbol
 
-type Select<T,W> = {
+type Select<Theme, W> = {
   <U extends keyof W>(key: U):
     W[U] extends ThemeObject
-      ? Select<T,W[U]>
-      : ({theme}: {theme: T}) => W[U]
-  ({theme}: {theme: T}): W
+      ? Select<Theme,W[U]>
+      : (theme: Theme) => W[U]
+  (theme: Theme): W
 }
 
 type ThemeObject = {
@@ -32,11 +32,11 @@ export const base = <T extends ThemeObject>() => <U extends keyof T>(
     type Theme = {theme: T}
 
     const wrapper = <W>(keys: Key[]) => {
-        function select(next: keyof W): Select<T,W[typeof next]>
+        function select(next: keyof W): Select<Theme,W[typeof next]>
         function select(next: Theme): W
         function select<U extends Theme | keyof W>(next: U) {
             if (isThemeObjectKey<W>(next)) {
-                return wrapper<W[typeof next]>([...keys, next]) as Select<T,W[typeof next]>
+                return wrapper<W[typeof next]>([...keys, next]) as Select<Theme,W[typeof next]>
             }
             return access<W>(keys, next)
         }
