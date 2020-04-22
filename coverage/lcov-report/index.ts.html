@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>19/19</span>
+                <span class='fraction'>23/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>15/16</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>21/21</span>
             </div>
         
             
@@ -115,8 +115,13 @@
 <a name='L56'></a><a href='#L56'>56</a>
 <a name='L57'></a><a href='#L57'>57</a>
 <a name='L58'></a><a href='#L58'>58</a>
-<a name='L59'></a><a href='#L59'>59</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -142,10 +147,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">34x</span>
-<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">37x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -174,17 +186,16 @@
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">type Key = string | number | symbol
-&nbsp;
-type Select&lt;Theme, W&gt; = {
-  &lt;U extends keyof W&gt;(key: U): Select&lt;Theme, W[U]&gt;
-  (theme: Theme): W
-  &lt;T&gt;(cb: (curent:W, all: Theme &amp; {[key in Key]: any}) =&gt; T): (theme: Theme) =&gt; T 
+type AnyObject =  {[key in Key]: any}
+type PropsWithTheme&lt;T&gt; = {theme: T} &amp; AnyObject
+type Select&lt;Props, W&gt; = {
+  &lt;U extends keyof W&gt;(key: U): Select&lt;Props, W[U]&gt;
+  (theme: Props): W
+  &lt;T&gt;(cb: (curent:W, allProps: Props &amp; AnyObject) =&gt; T): (allProps: Props) =&gt; T 
 }
-&nbsp;
 type ThemeObject = {
     [key in Key]: ThemeObject | any
 }
-&nbsp;
 type Callback&lt;W, R&gt; = (arg: W, arg2: R) =&gt; unknown
 &nbsp;
 const isCallback = &lt;W, R&gt;(thing: any): thing is Callback&lt;W, R&gt; =&gt; {
@@ -199,31 +210,38 @@ const isThemeObjectKey = &lt;T&gt;(thing: any): thing is keyof T =&gt; {
     )
 }
 &nbsp;
-const access = &lt;T&gt;(keys: any, obj: any): T =&gt; {
+export const access = &lt;T&gt;(keys: Key[], obj: any): T =&gt; {
     const key = keys[0]
-    return obj &amp;&amp; key
-        ? keys.length === 1
-            ? obj[key]
-            : access(keys.slice(1), obj[key])
-        : <span class="branch-1 cbranch-no" title="branch not covered" >obj</span>
+&nbsp;
+    if(!obj || typeof obj !== 'object') {
+        throw new Error(`Encountered '${obj}' but expected object with key '${String(key)}'`);
+    }
+&nbsp;
+    if(!obj.hasOwnProperty(key)) {
+        throw new Error(`Encountered object with keys: [${Object.keys(obj)}] but expected object with key '${String(key)}'`);
+    }
+&nbsp;
+    return keys.length === 1
+        ? obj[key]
+        : access(keys.slice(1), obj[key])
 }
 &nbsp;
-export const base = &lt;T extends ThemeObject&gt;() =&gt; &lt;U extends keyof T&gt;(
+export const baseSelector = &lt;T extends ThemeObject&gt;() =&gt; &lt;U extends keyof T&gt;(
     key: U
 ) =&gt; {
     const keys: Key[] = ['theme', key] 
-    type Theme = {theme: T}
+    type Props = PropsWithTheme&lt;T&gt;
 &nbsp;
     const wrapper = &lt;W&gt;(keys: Key[]) =&gt; {
-        function select(next: keyof W): Select&lt;Theme,W[typeof next]&gt;
-        function select(next: Theme): W
-        function select&lt;Z&gt;(next: (current: W, all: Theme &amp; any) =&gt; Z): (theme: Theme) =&gt; Z
-        function select&lt;U extends Theme | keyof W&gt;(next: U) {
-            if (isCallback&lt;W, Theme&gt;(next)){
-                return (theme: Theme) =&gt; next(access&lt;W&gt;(keys, theme), theme)
+        function select&lt;U extends keyof W&gt;(next: U): Select&lt;Props, W[U]&gt;
+        function select(next: Props): W
+        function select&lt;U&gt;(next: (current: W, allProps: Props) =&gt; U): (allProps: Props) =&gt; U
+        function select&lt;U extends Props | keyof W&gt;(next: U) {
+            if (isCallback&lt;W, Props&gt;(next)){
+                return (allProps: Props) =&gt; next(access&lt;W&gt;(keys, allProps), allProps)
             }
             if (isThemeObjectKey&lt;W&gt;(next)) {
-                return wrapper&lt;W[typeof next]&gt;([...keys, next]) as Select&lt;Theme,W[typeof next]&gt;
+                return wrapper&lt;W[typeof next]&gt;([...keys, next])
             }
             return access&lt;W&gt;(keys, next)
         }
@@ -238,7 +256,7 @@ export const base = &lt;T extends ThemeObject&gt;() =&gt; &lt;U extends keyof T&
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Apr 21 2020 22:27:41 GMT+0200 (Central European Summer Time)
+                at Wed Apr 22 2020 11:35:33 GMT+0200 (Central European Summer Time)
             </div>
         </div>
         <script src="prettify.js"></script>

@@ -1,4 +1,4 @@
-import { base } from '..'
+import { access, baseSelector as base } from '..'
 
 const theme = {
     colors: {
@@ -26,7 +26,7 @@ const theme = {
 
 type Theme = typeof theme;
 
-describe('base', () => {
+describe('baseSelector', () => {
     const baseSelector = base<Theme>()
     it('can access nested properities', () => {
         const darkBlueMainColor = baseSelector('colors')('main')('blue')('dark')(1)({theme})
@@ -76,5 +76,18 @@ describe('base', () => {
             expect(spy).toHaveBeenCalledWith(1, props)
         })
     })
-    
+})
+
+describe('access', () => {
+    it('throws on invalid path', () => {
+        const obj = {one: {two: 3}}
+        const invalidKeys = ['one', 'three'];
+        expect(() => access(invalidKeys, obj)).toThrow(`Encountered object with keys: [two] but expected object with key 'three'`)
+    })
+
+    it('throws on invalid object', () => {
+        const obj = {one: null}
+        const keys = ['one', 'two'];
+        expect(() => access(keys, obj)).toThrow(`Encountered 'null' but expected object with key 'two'`)
+    })
 })

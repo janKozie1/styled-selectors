@@ -23,16 +23,23 @@ const isThemeObjectKey = <T>(thing: any): thing is keyof T => {
     )
 }
 
-const access = <T>(keys: Key[], obj: any): T => {
+export const access = <T>(keys: Key[], obj: any): T => {
     const key = keys[0]
-    return obj && key
-        ? keys.length === 1
-            ? obj[key]
-            : access(keys.slice(1), obj[key])
-        : obj
+
+    if(!obj || typeof obj !== 'object') {
+        throw new Error(`Encountered '${obj}' but expected object with key '${String(key)}'`);
+    }
+
+    if(!obj.hasOwnProperty(key)) {
+        throw new Error(`Encountered object with keys: [${Object.keys(obj)}] but expected object with key '${String(key)}'`);
+    }
+
+    return keys.length === 1
+        ? obj[key]
+        : access(keys.slice(1), obj[key])
 }
 
-export const base = <T extends ThemeObject>() => <U extends keyof T>(
+export const baseSelector = <T extends ThemeObject>() => <U extends keyof T>(
     key: U
 ) => {
     const keys: Key[] = ['theme', key] 
