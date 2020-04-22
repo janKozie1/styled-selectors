@@ -1,15 +1,14 @@
 type Key = string | number | symbol
-
-type Select<Theme, W> = {
-  <U extends keyof W>(key: U): Select<Theme, W[U]>
-  (theme: Theme): W
-  <T>(cb: (curent:W, all: Theme & {[key in Key]: any}) => T): (theme: Theme) => T 
+type AnyObject =  {[key in Key]: any}
+type PropsWithTheme<T> = {theme: T} & AnyObject
+type Select<Props, W> = {
+  <U extends keyof W>(key: U): Select<Props, W[U]>
+  (theme: Props): W
+  <T>(cb: (curent:W, allProps: Props & AnyObject) => T): (allProps: Props) => T 
 }
-
 type ThemeObject = {
     [key in Key]: ThemeObject | any
 }
-
 type Callback<W, R> = (arg: W, arg2: R) => unknown
 
 const isCallback = <W, R>(thing: any): thing is Callback<W, R> => {
@@ -24,7 +23,7 @@ const isThemeObjectKey = <T>(thing: any): thing is keyof T => {
     )
 }
 
-const access = <T>(keys: any, obj: any): T => {
+const access = <T>(keys: Key[], obj: any): T => {
     const key = keys[0]
     return obj && key
         ? keys.length === 1
@@ -37,18 +36,18 @@ export const base = <T extends ThemeObject>() => <U extends keyof T>(
     key: U
 ) => {
     const keys: Key[] = ['theme', key] 
-    type Theme = {theme: T}
+    type Props = PropsWithTheme<T>
 
     const wrapper = <W>(keys: Key[]) => {
-        function select(next: keyof W): Select<Theme,W[typeof next]>
-        function select(next: Theme): W
-        function select<Z>(next: (current: W, all: Theme & any) => Z): (theme: Theme) => Z
-        function select<U extends Theme | keyof W>(next: U) {
-            if (isCallback<W, Theme>(next)){
-                return (theme: Theme) => next(access<W>(keys, theme), theme)
+        function select<U extends keyof W>(next: U): Select<Props, W[U]>
+        function select(next: Props): W
+        function select<U>(next: (current: W, allProps: Props) => U): (allProps: Props) => U
+        function select<U extends Props | keyof W>(next: U) {
+            if (isCallback<W, Props>(next)){
+                return (allProps: Props) => next(access<W>(keys, allProps), allProps)
             }
             if (isThemeObjectKey<W>(next)) {
-                return wrapper<W[typeof next]>([...keys, next]) as Select<Theme,W[typeof next]>
+                return wrapper<W[typeof next]>([...keys, next])
             }
             return access<W>(keys, next)
         }
