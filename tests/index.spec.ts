@@ -28,6 +28,7 @@ type Theme = typeof theme;
 
 describe('baseSelector', () => {
     const baseSelector = base<Theme>()
+
     it('can access nested properities', () => {
         const darkBlueMainColor = baseSelector('colors')('main')('blue')('dark')(1)({theme})
 

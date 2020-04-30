@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>18/18</span>
+                <span class='fraction'>20/20</span>
             </div>
         
             
@@ -121,7 +121,21 @@
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
-<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -162,13 +176,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -183,23 +200,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">type Key = string | number | symbol
-type AnyObject =  {[key in Key]: any}
+type AnyObject = {} | {[key in Key]: any}
 type PropsWithTheme&lt;T&gt; = {theme: T} &amp; AnyObject
-type Select&lt;Props, W&gt; = {
-  &lt;U extends keyof W&gt;(key: U): Select&lt;Props, W[U]&gt;
-  (theme: Props): W
-  &lt;T&gt;(cb: (curent:W, allProps: Props &amp; AnyObject) =&gt; T): (allProps: Props) =&gt; T 
+&nbsp;
+type Select&lt;T, Props&gt; = {
+  &lt;U extends keyof T&gt;(key: U): Select&lt;T[U], Props&gt;
+  (componentProps: Props): T
+  &lt;U&gt;(cb: (curent:T, componentProps: Props) =&gt; U): (componentProps: Props) =&gt; U
 }
+&nbsp;
 type ThemeObject = {
     [key in Key]: ThemeObject | any
 }
-type Callback&lt;W, R&gt; = (arg: W, arg2: R) =&gt; unknown
+type Callback&lt;T, U&gt; = (current: T, componentProps: U) =&gt; unknown
 &nbsp;
-const isCallback = &lt;W, R&gt;(thing: any): thing is Callback&lt;W, R&gt; =&gt; {
-    return thing &amp;&amp; typeof thing === 'function'
+const isCallback = &lt;T, U&gt;(thing: any): thing is Callback&lt;T, U&gt; =&gt; {
+    return thing &amp;&amp; typeof thing === 'function' &amp;&amp; thing.call &amp;&amp; thing.apply
 }
 &nbsp;
 const isThemeObjectKey = &lt;T&gt;(thing: any): thing is keyof T =&gt; {
@@ -226,28 +252,38 @@ export const access = &lt;T&gt;(keys: Key[], obj: any): T =&gt; {
         : access(keys.slice(1), obj[key])
 }
 &nbsp;
+type Merge&lt;T, U&gt; = 
+    T extends undefined 
+        ? U extends undefined 
+            ? {}
+            : U
+        : U extends undefined 
+            ? T
+            : T &amp; U
+&nbsp;
+const wrapper = &lt;T, ComponentProps&gt;(keys: Key[]) =&gt; {
+    function select&lt;U extends keyof T&gt;(next: U): Select&lt;T[U], ComponentProps&gt;
+    function select(next: ComponentProps): T
+    function select&lt;U&gt;(next: (current: T, componentProps: ComponentProps) =&gt; U): (componentProps: ComponentProps) =&gt; U
+    function select&lt;U extends ComponentProps | keyof T&gt;(next: U) {
+        if (isCallback&lt;T, ComponentProps&gt;(next)){
+            return (componentProps: ComponentProps) =&gt; next(access&lt;T&gt;(keys, componentProps), componentProps)
+        }
+        if (isThemeObjectKey&lt;T&gt;(next)) {
+            return wrapper&lt;T[typeof next], ComponentProps&gt;([...keys, next])
+        }
+        return access&lt;T&gt;(keys, next)
+    }
+    return select
+}
+&nbsp;
 export const baseSelector = &lt;T extends ThemeObject&gt;() =&gt; &lt;U extends keyof T&gt;(
     key: U
 ) =&gt; {
     const keys: Key[] = ['theme', key] 
-    type Props = PropsWithTheme&lt;T&gt;
+    type ComponentProps = PropsWithTheme&lt;T&gt;
 &nbsp;
-    const wrapper = &lt;W&gt;(keys: Key[]) =&gt; {
-        function select&lt;U extends keyof W&gt;(next: U): Select&lt;Props, W[U]&gt;
-        function select(next: Props): W
-        function select&lt;U&gt;(next: (current: W, allProps: Props) =&gt; U): (allProps: Props) =&gt; U
-        function select&lt;U extends Props | keyof W&gt;(next: U) {
-            if (isCallback&lt;W, Props&gt;(next)){
-                return (allProps: Props) =&gt; next(access&lt;W&gt;(keys, allProps), allProps)
-            }
-            if (isThemeObjectKey&lt;W&gt;(next)) {
-                return wrapper&lt;W[typeof next]&gt;([...keys, next])
-            }
-            return access&lt;W&gt;(keys, next)
-        }
-        return select
-    }
-    return wrapper&lt;T[U]&gt;(keys)
+    return wrapper&lt;T[U], ComponentProps&gt;(keys)
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -256,7 +292,7 @@ export const baseSelector = &lt;T extends ThemeObject&gt;() =&gt; &lt;U extends 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Apr 22 2020 11:35:33 GMT+0200 (Central European Summer Time)
+                at Thu Apr 30 2020 13:15:43 GMT+0200 (Central European Summer Time)
             </div>
         </div>
         <script src="prettify.js"></script>
