@@ -11,6 +11,7 @@ type Select<T, Props> = {
 type ThemeObject = {
     [key in Key]: ThemeObject | any
 }
+
 type Callback<T, U> = (current: T, componentProps: U) => unknown
 
 const isCallback = <T, U>(thing: any): thing is Callback<T, U> => {
@@ -66,11 +67,4 @@ const wrapper = <T, ComponentProps>(keys: Key[]) => {
     return select
 }
 
-export const baseSelector = <T extends ThemeObject>() => <U extends keyof T>(
-    key: U
-) => {
-    const keys: Key[] = ['theme', key] 
-    type ComponentProps = PropsWithTheme<T>
-
-    return wrapper<T[U], ComponentProps>(keys)
-}
+export const baseSelector = <T extends ThemeObject>() => wrapper<T, PropsWithTheme<T>>(['theme'])
