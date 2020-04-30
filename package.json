@@ -2,14 +2,26 @@
     "name": "styled-selectors",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "keywords": [],
     "author": "",
     "license": "ISC",
+    "files": [
+        "dist//**/*"
+    ],
+    "bugs": {
+        "url": "https://github.com/janKozie1/styled-selectors/issues"
+    },
+    "homepage": "https://github.com/janKozie1/styled-selectors#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/janKozie1/styled-selectors.git"
+    },
     "scripts": {
         "test": "jest --coverage --testPathPattern=\"(\\.|/)spec\\.ts\""
     },
-    "dependencies": {
+    "devDependencies": {
         "@types/jest": "^25.2.1",
         "jest": "^25.4.0",
         "ts-jest": "^25.4.0",
