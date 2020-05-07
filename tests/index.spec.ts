@@ -24,7 +24,29 @@ const theme = {
     }
 };
 
-type Theme = typeof theme;
+type Theme = {
+    colors: {
+        main: {
+            blue: {
+                dark: {
+                    1: string;
+                };
+            };
+            red: {
+                light: {
+                    2: string;
+                };
+            };
+        };
+    };
+    something: string;
+    size: {
+        toolbar: {
+            big: number;
+            small: number;
+        };
+    };
+};
 
 describe('baseSelector', () => {
     const baseSelector = base<Theme>()
@@ -74,7 +96,22 @@ describe('baseSelector', () => {
             const props = {theme, reactProp: 5}
             baseSelector('size')('toolbar')('small')(spy)(props)
 
-            expect(spy).toHaveBeenCalledWith(1, props)
+            expect(spy).toHaveBeenCalledWith(1, props, expect.objectContaining({}))
+        })
+    })
+
+    describe('additional props', () => {
+        it('can use additional props in callbacks' , () => {
+            const numberParser = (a: number) => a * 2;
+            const toolbarSize = baseSelector('size')('toolbar', {numberParser})
+            const parsedSmall = toolbarSize('small')((current, _props, {numberParser}) => numberParser(current))
+            const parsedBig = toolbarSize('big', {smallSizeSelector: parsedSmall})((current, props, {smallSizeSelector}) => current + smallSizeSelector(props));
+
+            // doubled original small toolbar size
+            expect(parsedSmall({theme})).toEqual(2)
+
+            // normal big toolbar size + doubled small size
+            expect(parsedBig({theme})).toEqual(7)
         })
     })
 })
