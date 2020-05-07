@@ -69,7 +69,7 @@ const wrapper = <T, ComponentProps, AdditionalProps extends AnyObject>(keys: Key
         }
         if (isThemeObjectKey<T>(next)) {
             type NextProps = Merge<AdditionalProps, W>
-            return wrapper<T[typeof next], ComponentProps, NextProps>([...keys, next], Object.assign(additionalProps, (false || nextProps) as NextProps))
+            return wrapper<T[typeof next], ComponentProps, NextProps>([...keys, next], (nextProps ? {...additionalProps, ...nextProps} : additionalProps) as NextProps)
         }
         return access<T>(keys, next)
     }
