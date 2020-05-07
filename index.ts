@@ -16,6 +16,14 @@ type ThemeObject = {
 
 type Callback<T, U, W> = (current: T, componentProps: U, additionalProps: W) => unknown
 
+type Merge<T, U> = T extends undefined
+    ? U extends undefined
+      ? {}
+      : U
+    : U extends undefined
+      ? T
+      : T & U
+
 const isCallback = <T, U, W>(thing: any): thing is Callback<T, U, W> => {
     return thing && typeof thing === 'function' && thing.call && thing.apply
 }
@@ -49,15 +57,6 @@ export const access = <T>(keys: Key[], obj: any): T => {
     return keys.length === 1 ? obj[key] : access(keys.slice(1), obj[key])
 }
 
-type Merge<T, U> = T extends undefined
-    ? U extends undefined
-      ? {}
-      : U
-    : U extends undefined
-      ? T
-      : T & U
-
-
 const wrapper = <T, ComponentProps, AdditionalProps extends AnyObject>(keys: Key[], additionalProps: AdditionalProps) => {
     function select<U extends keyof T, W extends AnyObject>(next: U, nextProps?: W): Select<T[U], ComponentProps, Merge<AdditionalProps, W>>
     function select(next: ComponentProps): T
@@ -77,10 +76,9 @@ const wrapper = <T, ComponentProps, AdditionalProps extends AnyObject>(keys: Key
     return select
 }
 
-type Empty = {}
 
 export const baseSelector = <T extends ThemeObject>(): Select<
     T,
     PropsWithTheme<T>,
-    Empty
-> => wrapper<T, PropsWithTheme<T>, Empty>(['theme'], {})
+    {}
+> => wrapper<T, PropsWithTheme<T>, {}>(['theme'], {})

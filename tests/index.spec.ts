@@ -91,7 +91,7 @@ describe('baseSelector', () => {
             expect(lastLevel).toBe('5px')
         })
 
-        it('pases extra props to callbacks', () => {
+        it('passes extra props to callbacks', () => {
             const spy = jest.fn()
             const props = {theme, reactProp: 5}
             baseSelector('size')('toolbar')('small')(spy)(props)
