@@ -43,8 +43,8 @@ export const access = <T>(keys: Key[], obj: any): T => {
 
 const wrapper = <T, ComponentProps, AdditionalProps extends AnyObject>(keys: Key[], additionalProps: AdditionalProps) => {
     function select<U extends keyof T>(next: U): Select<T[U], ComponentProps, AdditionalProps>
-    function select<U>(next: (current: T, componentProps: ComponentProps, additionalProps: AdditionalProps) => U): (componentProps: ComponentProps) => U
     function select<U extends AnyObject>(next: U): Select<T, ComponentProps, AdditionalProps & U>
+    function select<U>(next: (current: T, componentProps: ComponentProps, additionalProps: AdditionalProps) => U): (componentProps: ComponentProps) => U
     function select(next: ComponentProps): T
     function select<U extends ComponentProps | keyof T | AnyObject>(next: U) {
         if (isCallback<T, ComponentProps, AdditionalProps>(next)) {

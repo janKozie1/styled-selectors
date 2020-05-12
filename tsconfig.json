@@ -4,9 +4,10 @@
         "module": "commonjs",
         "lib": ["es2017", "dom"],
         "declaration": true,
-        "outDir": "dist",
+        "outDir": "lib",
         "strict": true,
         "esModuleInterop": true
     },
-    "exclude": ["node_modules", "dist", "tests"]
+    "files": ["./src/index.ts"],
+    "exclude": ["node_modules", "lib", "tests"]
 }

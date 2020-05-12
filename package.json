@@ -5,7 +5,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "keywords": [],
-    "author": "",
+    "author": "Jan Koziel",
     "license": "ISC",
     "files": [
         "dist//**/*"
@@ -19,7 +19,8 @@
         "url": "git+https://github.com/janKozie1/styled-selectors.git"
     },
     "scripts": {
-        "test": "jest --coverage --testPathPattern=\"(\\.|/)spec\\.ts\""
+        "test": "jest --coverage --testPathPattern=\"(\\.|/)spec\\.ts\"",
+        "build": "tsc --build"
     },
     "devDependencies": {
         "@types/jest": "^25.2.1",
