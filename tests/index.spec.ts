@@ -24,7 +24,7 @@ const theme = {
     }
 };
 
-type Theme = {
+export type Theme = {
     colors: {
         main: {
             blue: {
@@ -101,17 +101,36 @@ describe('baseSelector', () => {
     })
 
     describe('additional props', () => {
-        it('can use additional props in callbacks' , () => {
-            const numberParser = (a: number) => a * 2;
-            const toolbarSize = baseSelector('size')('toolbar', {numberParser})
-            const parsedSmall = toolbarSize('small')((current, _props, {numberParser}) => numberParser(current))
-            const parsedBig = toolbarSize('big', {smallSizeSelector: parsedSmall})((current, props, {smallSizeSelector}) => current + smallSizeSelector(props));
+        const numberParser = (size: number) => size * 2;
+        const numberToPx = (size: number) => size + 'px';
 
-            // doubled original small toolbar size
-            expect(parsedSmall({theme})).toEqual(2)
+        it('has access to extra props' , () => {
+            const parsedToolbarSize = baseSelector({numberParser, numberToPx})('size')('toolbar')('big')(
+                (size, _props, {numberParser, numberToPx}) => numberToPx(numberParser(size))
+            )
 
-            // normal big toolbar size + doubled small size
-            expect(parsedBig({theme})).toEqual(7)
+            expect(parsedToolbarSize({theme})).toBe('10px')
+        })
+
+        it('shared props are not shared between branched off selectors', () => {
+            const bigToolbarSpy = jest.fn();
+            const smallToolbarSpy = jest.fn(); 
+
+            const toolbarSize = baseSelector('size')('toolbar');
+            toolbarSize({numberParser})('big')(bigToolbarSpy)({theme});
+            toolbarSize({numberToPx})('small')(smallToolbarSpy)({theme});
+
+            expect(bigToolbarSpy.mock.calls[0][2]).toMatchObject({numberParser});
+            expect(smallToolbarSpy.mock.calls[0][2]).toMatchObject({numberToPx});
+        })
+
+        it('can use other selectors as extra props', () => {
+            const toolbarSizes = baseSelector('size')('toolbar');
+            const bigToolbar = toolbarSizes('big');
+            const parsedSmallToolbar = toolbarSizes({bigToolbar})('small')((size, props, {bigToolbar}) => size + bigToolbar(props));
+
+            // small + big toolbar size
+            expect(parsedSmallToolbar({theme})).toBe(6)
         })
     })
 })
