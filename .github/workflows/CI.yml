@@ -30,4 +30,4 @@ jobs:
       - uses: actions/checkout@v2
       - name: re-use cache
         uses: ./.github/actions/cache
-      - run: yarn test ${{ matrix.chunk }}
+      - run: ./scripts/chunk_tests ${{ matrix.chunk }}
