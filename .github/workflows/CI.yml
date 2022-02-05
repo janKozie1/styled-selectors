@@ -23,8 +23,11 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     needs: [setup-deps]
+    strategy:
+      matrix:
+        chunk: [0, 1, 2, 3]
     steps:
       - uses: actions/checkout@v2
       - name: re-use cache
         uses: ./.github/actions/cache
-      - run: yarn test
+      - run: yarn test ${{ matrix.chunk }}
