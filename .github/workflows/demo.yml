@@ -9,5 +9,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'yarn'
+      - run: ls ${{ github.workspace }}
       - run: yarn install
       - run: yarn test
