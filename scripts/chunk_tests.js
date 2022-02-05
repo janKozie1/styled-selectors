@@ -31,6 +31,6 @@ async function init() {
 init()
   .then((chunks) => console.log(chunks))
   .catch((err) => {
-    console.log(err)
+    console.log(err, "??")
     process.exit(1)
   });
