@@ -30,5 +30,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: re-use cache
         uses: ./.github/actions/cache
-      - run: node ./scripts/chunk_tests.js ${{ matrix.chunk }}
+      - name: chunk tests
+        run: node ./scripts/chunk_tests.js ${{ matrix.chunk }}
         shell: bash
