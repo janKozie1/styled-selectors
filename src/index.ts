@@ -61,6 +61,6 @@ const wrapper = <T, ComponentProps, AdditionalProps extends AnyObject>(keys: Key
     }
     return select
 }
- s
+
 
 export const baseSelector = <T extends ThemeObject>(): Select<T, PropsWithTheme<T>, {}> => wrapper<T, PropsWithTheme<T>, {}>(['theme'], {})
