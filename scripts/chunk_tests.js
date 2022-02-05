@@ -20,12 +20,17 @@ async function init() {
   console.log(process.argv);
 
   const asyncExec = promisify(exec);
-
-  asyncExec('pwd').then((result) => console.log(result))
-
-  asyncExec('find ./src -name "*.spec.ts"')
-    .then((result) => console.log(result))
-    .catch((err) => console.log(err))
+  const testFiles = (await asyncExec('yarn test:list'))
+    .split('\n')
+    .map(async (filePath) => {
+      const amountOfAwaits = await asyncExec(`grep -c " await " ${filePath}`);
+      console.log({filePath, amountOfAwaits})
+    })
 }
 
-init();
+init()
+  .then((chunks) => console.log(chunks))
+  .catch((err) => {
+    console.log(err)
+    process.exit(1)
+  });
