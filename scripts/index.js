@@ -38,6 +38,7 @@ const main = async() => {
   await fetchBaseBranch(branches.to);
 
   console.log(`::set-output name=BASE_BRANCH::${branches.to}`)
+  console.log(`::set-output name=HEAD_BRANCH::${branches.from}`)
 }
 
 main()

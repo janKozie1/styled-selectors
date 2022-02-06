@@ -24,11 +24,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup-deps]
     steps:
-      # - run: echo ${{ github.event.pull_request.head.sha }}
       - uses: actions/checkout@v2
       - name: re-use cache
         uses: ./.github/actions/cache
       - name: Fetch base branch
         id: fetch_base
         run: node ./scripts/index.js ${{ github.token }}
+      - run: git merge-base origin/${{ steps.fetch_base.outputs.BASE_BRANCH }} origin/${{ steps.fetch_base.outputs.HEAD_BRANCH }}
       - run: yarn test --changedSince origin/${{ steps.fetch_base.outputs.BASE_BRANCH }}
