@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup-deps]
     steps:
-      - run: echo ${{ github.event }}
+      - run: echo ${{ github.event.pull_request.head.sha }}
       - uses: actions/checkout@v2
       - name: re-use cache
         uses: ./.github/actions/cache
