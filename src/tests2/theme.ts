@@ -27,7 +27,7 @@ export const theme: Theme = {
         main: {
             blue: {
                 dark: {
-                    1: '00008B',
+                    2: '00008B',
                 },
             },
             red: {
