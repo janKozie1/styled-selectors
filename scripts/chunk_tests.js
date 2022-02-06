@@ -26,7 +26,7 @@ async function init() {
 
   const wd = await asyncExec("pwd");
   console.log({wd})
-  const testFiles = await Promise.all((await asyncExec('yarn test:list'))
+  const testFiles = await Promise.all((await asyncExec('find ./src -name "*.spec.ts"'))
     .split('\n')
     .filter((filePath) => filePath.includes("src"))
     .map(async (filePath) => {
