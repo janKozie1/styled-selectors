@@ -24,10 +24,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup-deps]
     steps:
-      - run: echo ${{ github.event.pull_request.head.sha }}
+      # - run: echo ${{ github.event.pull_request.head.sha }}
       - uses: actions/checkout@v2
       - name: re-use cache
         uses: ./.github/actions/cache
-      - run: echo ${{ github.repository }}
-      - run: yarn test --changedSince ${{ github.event.pull_request.head.sha }}
+      - run: node ./scripts/index.js
+      # - run: echo ${{ github.repository }}
+      # - run: yarn test --changedSince ${{ github.event.pull_request.head.sha }}
       # - run: echo ${{ steps.setup_deps.outputs.MASTER_HASH }}
