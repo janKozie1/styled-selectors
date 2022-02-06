@@ -27,5 +27,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: re-use cache
         uses: ./.github/actions/cache
+      - run: echo ${{ github.event.pull_request.head.sha }}
+      - run: echo ${{ github.head_ref }}
       - run: yarn test --changedSince ${{ github.event.pull_request.head.sha }}
       # - run: echo ${{ steps.setup_deps.outputs.MASTER_HASH }}
