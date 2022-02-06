@@ -21,10 +21,15 @@ async function init() {
   const asyncExec = promisify(exec);
 
   const token = process.argv[2];
+  await asyncExec(`echo ${token} | gh auth login --with-token`);
 
-  const login = await asyncExec(`echo ${token} | gh auth login --with-token`);
   const info = await asyncExec(`gh pr view`);
-  console.log({info, login})
+
+  const response = info.toString();
+  const prDetails = response.match(/into (\S+) from (\S+)/i);
+  const [, baseBranch, targetBranch] = prDetails;
+  console.log("Base branch: ", baseBranch);
+  console.log("Target branch: ", targetBranch);
 }
 
 init()
