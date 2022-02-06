@@ -17,8 +17,8 @@ const promisify = (fn) => (...args) => new Promise((resolve, reject) => {
 const exec = promisify(defaultExec);
 
 const getPRBranches = async () => {
-  const { prBranch, baseBranch } = JSON.parse(await exec(`gh pr view  --json baseRefName,headRefName`));
-  return { to: baseBranch, from: prBranch }
+  const { baseRefName, headRefName } = JSON.parse(await exec(`gh pr view  --json baseRefName,headRefName`));
+  return { to: baseRefName, from: headRefName }
 }
 
 const fetchBaseBranch = async (baseBranch) => {
