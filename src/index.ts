@@ -2,7 +2,7 @@
 type Key = string | number | symbol
 type AnyObject = { [key in Key]: any }
 type PropsWithTheme<T> = { theme: T } & AnyObject
-type Merge<T extends AnyObject, U extends AnyObject> = U & Pick<T, Exclude<keyof T, keyof U>> 
+type Merge<T extends AnyObject, U extends AnyObject> = U & Pick<T, Exclude<keyof T, keyof U>>
 
 type Select<T, Props, ExtraProps> = {
     <U extends keyof T>(key: U): Select<T[U], Props, ExtraProps>;
@@ -21,7 +21,7 @@ const isCallback = <T, U, W>(thing: any): thing is Callback<T, U, W> => {
     return thing && typeof thing === 'function' && thing.call && thing.apply
 }
 
-const isThemeObjectKey = <T>(thing: any): thing is keyof T => 
+const isThemeObjectKey = <T>(thing: any): thing is keyof T =>
     thing && (typeof thing === 'number' || typeof thing === 'string' || typeof thing === 'symbol')
 
 const isAdditionalProps = (thing: any): thing is AnyObject =>

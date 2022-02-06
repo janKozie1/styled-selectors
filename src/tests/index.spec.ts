@@ -1,4 +1,4 @@
-import { access, baseSelector as base } from '../src'
+import { access, baseSelector as base } from '..'
 import { theme, Theme } from './theme'
 
 
@@ -35,10 +35,10 @@ describe('baseSelector', () => {
     describe('callbacks', () => {
         it('accepts callbacks', () => {
             const sizeWithRem = baseSelector('size')('toolbar')((sizes) => sizes.big + sizes.small + 'rem')({theme})
-            
+
             expect(sizeWithRem).toBe('6rem')
         })
-    
+
         it('accepts callback on the last level', () => {
             const lastLevel = baseSelector('size')('toolbar')('big')((big) => big + 'px')({theme})
 
@@ -68,7 +68,7 @@ describe('baseSelector', () => {
 
         it('shared props are not shared between branched off selectors', () => {
             const bigToolbarSpy = jest.fn();
-            const smallToolbarSpy = jest.fn(); 
+            const smallToolbarSpy = jest.fn();
 
             const toolbarSize = baseSelector('size')('toolbar');
             toolbarSize({numberParser})('big')(bigToolbarSpy)({theme});

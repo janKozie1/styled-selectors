@@ -9,5 +9,5 @@
         "esModuleInterop": true
     },
     "files": ["./src/index.ts"],
-    "exclude": ["node_modules", "lib", "tests"]
+    "exclude": ["node_modules", "lib", "src/tests"]
 }
