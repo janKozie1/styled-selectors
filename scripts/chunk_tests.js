@@ -33,9 +33,6 @@ async function init() {
     .split('\n')
     .filter((filePath) => filePath.includes("src"))
     .map(async (filePath) => {
-      const parsedPath = relative(wd, filePath);
-      console.log({filePath, parsedPath})
-
       const fileContents = await asyncExec(`cat ${filePath}`)
       const amountOfAwaits = fileContents.split(" await ").length - 1;
 
