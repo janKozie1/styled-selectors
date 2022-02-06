@@ -21,7 +21,7 @@ async function init() {
   const asyncExec = promisify(exec);
 
 
-  const help = asyncExec("grep --help")
+  const help = await asyncExec("grep --help")
   console.log({help})
 
   const wd = await asyncExec("pwd");
