@@ -3,7 +3,7 @@ export type Theme = {
         main: {
             blue: {
                 dark: {
-                    1: string;
+                    2: string;
                 };
             };
             red: {
@@ -45,5 +45,3 @@ export const theme: Theme = {
         }
     }
 };
-
-
