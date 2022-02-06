@@ -25,6 +25,10 @@ jobs:
     needs: [setup-deps]
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{github.event.pull_request.head.ref}}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+      - uses: actions/checkout@v2
       - name: get branch name
         id: branch_name
         run: echo '::set-output name=BRANCH_NAME::$(git rev-parse --abbrev-ref HEAD)'
