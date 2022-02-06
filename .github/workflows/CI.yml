@@ -27,9 +27,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: get branch name
         id: branch_name
-        run: echo ::set-output name=BRANCH_NAME::$(git rev-parse --abbrev-ref HEAD)
+        run: echo '::set-output name=BRANCH_NAME::$(git rev-parse --abbrev-ref HEAD)'
       - name: get base commit
         id: base_commit
-        run: echo ::set-output name=BASE_COMMIT::$(git merge-base master ${{ steps.branch_name.outputs.BRANCH_NAME }})
+        run: echo '::set-output name=BASE_COMMIT::$(git merge-base master ${{ steps.branch_name.outputs.BRANCH_NAME }})'
       - run: echo ${{ steps.base_commit.outputs.BASE_COMMIT }}
       # - run: echo ${{ steps.setup_deps.outputs.MASTER_HASH }}
