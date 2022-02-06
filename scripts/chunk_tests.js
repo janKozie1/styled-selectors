@@ -21,25 +21,26 @@ async function init() {
   const asyncExec = promisify(exec);
 
 
-  const help = await asyncExec("ls")
-  console.log({help})
+  // const help = await asyncExec("ls")
+  // console.log({help})
 
-  const wd = await asyncExec("pwd");
-  console.log({wd})
+  // const wd = await asyncExec("pwd");
+  // console.log({wd})
 
-  const g = await asyncExec(`cat ./package.json`);
-  console.log({g})
-  // const testFiles = await Promise.all((await asyncExec('find ./src -name "*.spec.ts"'))
-  //   .split('\n')
-  //   .filter((filePath) => filePath.includes("src"))
-  //   .map(async (filePath) => {
-  //     const parsedPath = relative(wd, filePath);
-  //     console.log({filePath, parsedPath})
+  // const g = await asyncExec(`cat ./package.json`);
+  //console.log({g})
+  const testFiles = await Promise.all((await asyncExec('find ./src -name "*.spec.ts"'))
+    .split('\n')
+    .filter((filePath) => filePath.includes("src"))
+    .map(async (filePath) => {
+      const parsedPath = relative(wd, filePath);
+      console.log({filePath, parsedPath})
 
-  //     const amountOfAwaits = await asyncExec(`grep -c "hehe" ${filePath}`)
-  //       .catch((err) => console.log({err}));
-  //     console.log({filePath, amountOfAwaits})
-  //   }))
+      const fileContents = await asyncExec(`cat ${filePath}`)
+      const amountOfAwaits = fileContents.split(" await ").length - 1;
+
+      console.log({filePath, amountOfAwaits})
+    }))
 }
 
 init()
