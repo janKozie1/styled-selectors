@@ -33,7 +33,7 @@ async function init() {
       const parsedPath = relative(wd, filePath);
       console.log({filePath, parsedPath})
 
-      const amountOfAwaits = await asyncExec(`grep -c " await " ${parsedPath}`);
+      const amountOfAwaits = await asyncExec(`grep -c " await " ${filePath}`);
       console.log({filePath, amountOfAwaits})
     }))
 }
