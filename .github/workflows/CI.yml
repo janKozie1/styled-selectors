@@ -30,6 +30,4 @@ jobs:
       - name: Fetch base branch
         id: fetch_base
         run: node ./scripts/index.js ${{ github.token }}
-      - run: git merge-base origin/${{ steps.fetch_base.outputs.BASE_BRANCH }} ${{ steps.fetch_base.outputs.HEAD_BRANCH }}
-        shell: bash
       - run: yarn test --changedSince origin/${{ steps.fetch_base.outputs.BASE_BRANCH }}
