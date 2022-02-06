@@ -32,7 +32,7 @@ const fetchBaseBranch = async (baseBranch) => {
 
 const main = async() => {
   const token = process.argv[2];
-  await asyncExec(`echo ${token} | gh auth login --with-token`);
+  await exec(`echo ${token} | gh auth login --with-token`);
 
   const { baseBranch } = await getPRBranches();
   await fetchBaseBranch(baseBranch)
