@@ -20,7 +20,9 @@ const promisify = (fn) => {
 async function init() {
   const asyncExec = promisify(exec);
 
-  const login = await asyncExec(`gh auth login --with-token`);
+  const token = process.argv[2];
+
+  const login = await asyncExec(`echo ${token} | gh auth login --with-token`);
   const info = await asyncExec(`gh pr view`);
   console.log({info, login})
 }
