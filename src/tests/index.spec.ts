@@ -13,7 +13,7 @@ describe('baseSelector', () => {
 
     it('works for shallow properities', () => {
        const size =  baseSelector('something')({theme})
-
+        console.log("??")
        expect(size).toBe('some value')
     })
 
