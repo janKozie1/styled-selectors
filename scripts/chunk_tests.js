@@ -28,7 +28,7 @@ async function init() {
   console.log({wd})
 
   const g = await asyncExec(`cat ./package.json`);
-  console.log({wd})
+  console.log({g})
   // const testFiles = await Promise.all((await asyncExec('find ./src -name "*.spec.ts"'))
   //   .split('\n')
   //   .filter((filePath) => filePath.includes("src"))
