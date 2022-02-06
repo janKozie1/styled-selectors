@@ -21,7 +21,8 @@ async function init() {
   const asyncExec = promisify(exec);
 
 
-  console.log(process.argv);
+  const help = asyncExec("grep --help")
+  console.log({help})
 
   const wd = await asyncExec("pwd");
   const testFiles = await Promise.all((await asyncExec('yarn test:list'))
