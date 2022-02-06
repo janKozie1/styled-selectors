@@ -36,6 +36,8 @@ const main = async() => {
 
   const branches = await getPRBranches();
   await fetchBaseBranch(branches.to)
+
+  console.log(`git merge-base ${branches.to} ${branches.from}`)
 }
 
 main()
