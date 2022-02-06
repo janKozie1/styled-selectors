@@ -7,8 +7,6 @@ jobs:
     name: Setup project dependencies
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ github.event.pull_request.head.sha }}
-      - run: echo ${{ github.head_ref }}
       - uses: actions/checkout@v2
       - name: setup cache
         uses: ./.github/actions/cache
@@ -26,11 +24,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [setup-deps]
     steps:
-      - run: echo ${{ github.event.pull_request.head.sha }}
-      - run: echo ${{ github.head_ref }}
+      - run: echo ${{ github.repository }}
       - uses: actions/checkout@v2
       - name: re-use cache
         uses: ./.github/actions/cache
-
+      - run: echo ${{ github.repository }}
       - run: yarn test --changedSince ${{ github.event.pull_request.head.sha }}
       # - run: echo ${{ steps.setup_deps.outputs.MASTER_HASH }}
