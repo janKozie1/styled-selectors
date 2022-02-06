@@ -1,5 +1,5 @@
 const { exec } = require('child_process');
-const { } = require('path')
+const { relative } = require('path')
 
 const promisify = (fn) => {
   return (...args) => new Promise((resolve, reject) => {
@@ -22,14 +22,16 @@ async function init() {
 
 
   console.log(process.argv);
-  asyncExec("pwd").then((pwd) => console.log({pwd}))
 
+  const wd = asyncExec("pwd");
   const testFiles = await Promise.all((await asyncExec('yarn test:list'))
     .split('\n')
     .filter((filePath) => filePath.includes("src"))
     .map(async (filePath) => {
-      console.log({filePath})
-      const amountOfAwaits = await asyncExec(`grep -c " await " ${filePath}`);
+      const parsedPath = relative(wd, filePath);
+      console.log({filePath, parsedPath})
+
+      const amountOfAwaits = await asyncExec(`grep -c " await " ${parsedPath}`);
       console.log({filePath, amountOfAwaits})
     }))
 }
