@@ -21,10 +21,11 @@ async function init() {
   const asyncExec = promisify(exec);
 
 
-  const help = await asyncExec("grep --help")
+  const help = await asyncExec("ls")
   console.log({help})
 
   const wd = await asyncExec("pwd");
+  console.log({wd})
   const testFiles = await Promise.all((await asyncExec('yarn test:list'))
     .split('\n')
     .filter((filePath) => filePath.includes("src"))
