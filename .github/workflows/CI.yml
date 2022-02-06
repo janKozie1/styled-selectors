@@ -5,8 +5,11 @@ on: [push]
 jobs:
   setup-deps:
     name: Setup project dependencies
+    id: setup_deps
     runs-on: ubuntu-latest
     steps:
+      - name: Get master commit hash
+        run: echo '::set-output name=MASTER_HASH::$(git rev-parse HEAD)'
       - uses: actions/checkout@v2
       - name: setup cache
         uses: ./.github/actions/cache
@@ -23,13 +26,6 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     needs: [setup-deps]
-    strategy:
-      matrix:
-        chunk: [0, 1, 2, 3]
     steps:
-      - uses: actions/checkout@v2
-      - name: re-use cache
-        uses: ./.github/actions/cache
-      - name: chunk tests
-        run: node ./scripts/chunk_tests.js ${{ matrix.chunk }}
-        shell: bash
+      - run: echo $(git rev-parse HEAD)
+      - run: echo "${{ steps.setup_deps.outputs.MASTER_HASH }}"

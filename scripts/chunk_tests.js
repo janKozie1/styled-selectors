@@ -36,7 +36,7 @@ async function init() {
       const fileContents = await asyncExec(`cat ${filePath}`)
       const amountOfAwaits = fileContents.split(" await ").length - 1;
 
-      console.log({filePath, amountOfAwaits})
+      return { filePath, amountOfAwaits }
     }))
 }
 
