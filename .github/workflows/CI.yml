@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: re-use cache
         uses: ./.github/actions/cache
-      - run: node ./scripts/index.js ${{ github.token }}
-      # - run: echo ${{ github.repository }}
-      # - run: yarn test --changedSince ${{ github.event.pull_request.head.sha }}
-      # - run: echo ${{ steps.setup_deps.outputs.MASTER_HASH }}
+      - name: Fetch base branch
+        id: fetch_base
+        run: node ./scripts/index.js ${{ github.token }}
+      - run: yarn test --changedSince ${{ steps.fetch_base.outputs.BASE_BRANCH }}

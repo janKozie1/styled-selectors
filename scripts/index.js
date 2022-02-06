@@ -35,13 +35,12 @@ const main = async() => {
   await exec(`echo ${token} | gh auth login --with-token`);
 
   const branches = await getPRBranches();
-  await fetchBaseBranch(branches.to)
+  await fetchBaseBranch(branches.to);
 
-  console.log(`git merge-base ${branches.to} ${branches.from}`)
+  console.log(`::set-output name=BASE_BRANCH::${branches.to}`)
 }
 
 main()
-  .then((chunks) => console.log(chunks))
   .catch((err) => {
     console.log(err, "??")
     process.exit(1)
