@@ -26,6 +26,8 @@ async function init() {
   const info = await asyncExec(`gh pr view`);
 
   const response = info.toString();
+
+  console.log({response})
   const prDetails = response.match(/into (\S+) from (\S+)/i);
   const [, baseBranch, targetBranch] = prDetails;
   console.log("Base branch: ", baseBranch);
