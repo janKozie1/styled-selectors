@@ -26,17 +26,20 @@ async function init() {
 
   const wd = await asyncExec("pwd");
   console.log({wd})
-  const testFiles = await Promise.all((await asyncExec('find ./src -name "*.spec.ts"'))
-    .split('\n')
-    .filter((filePath) => filePath.includes("src"))
-    .map(async (filePath) => {
-      const parsedPath = relative(wd, filePath);
-      console.log({filePath, parsedPath})
 
-      const amountOfAwaits = await asyncExec(`grep -c "hehe" ${filePath}`)
-        .catch((err) => console.log({err}));
-      console.log({filePath, amountOfAwaits})
-    }))
+  const g = await asyncExec(`grep -c "hehe" ./package.json`);
+  console.log({wd})
+  // const testFiles = await Promise.all((await asyncExec('find ./src -name "*.spec.ts"'))
+  //   .split('\n')
+  //   .filter((filePath) => filePath.includes("src"))
+  //   .map(async (filePath) => {
+  //     const parsedPath = relative(wd, filePath);
+  //     console.log({filePath, parsedPath})
+
+  //     const amountOfAwaits = await asyncExec(`grep -c "hehe" ${filePath}`)
+  //       .catch((err) => console.log({err}));
+  //     console.log({filePath, amountOfAwaits})
+  //   }))
 }
 
 init()
