@@ -18,9 +18,12 @@ const promisify = (fn) => {
 }
 
 async function init() {
-  console.log(process.argv);
-
   const asyncExec = promisify(exec);
+
+
+  console.log(process.argv);
+  asyncExec("pwd").then((pwd) => console.log({pwd}))
+
   const testFiles = await Promise.all((await asyncExec('yarn test:list'))
     .split('\n')
     .filter((filePath) => filePath.includes("src"))
