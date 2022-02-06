@@ -27,7 +27,7 @@ async function init() {
   const wd = await asyncExec("pwd");
   console.log({wd})
 
-  const g = await asyncExec(`grep -c "hehe" ./package.json`);
+  const g = await asyncExec(`grep "hehe" ./package.json`);
   console.log({wd})
   // const testFiles = await Promise.all((await asyncExec('find ./src -name "*.spec.ts"'))
   //   .split('\n')
