@@ -31,6 +31,8 @@ jobs:
       - name: get base commit
         id: base_commit
         run: echo '::set-output name=BASE_COMMIT::$(git merge-base master ${{ steps.branch_name.outputs.BRANCH_NAME }})'
+      - name: re-use cache
+        uses: ./.github/actions/cache
       - run: echo ${{ steps.base_commit.outputs.BASE_COMMIT }}
       - run: yarn test --changedSince c0fea28df7cd138a41cd291caa03c69da8f38db4
       # - run: echo ${{ steps.setup_deps.outputs.MASTER_HASH }}
