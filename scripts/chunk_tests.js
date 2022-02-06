@@ -23,7 +23,7 @@ async function init() {
 
   console.log(process.argv);
 
-  const wd = asyncExec("pwd");
+  const wd = await asyncExec("pwd");
   const testFiles = await Promise.all((await asyncExec('yarn test:list'))
     .split('\n')
     .filter((filePath) => filePath.includes("src"))
