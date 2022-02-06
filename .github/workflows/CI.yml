@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get master commit hash
-        run: echo '::set-output name=MASTER_HASH::$(git rev-parse HEAD)'
+        run: echo ::set-output name=MASTER_HASH::$(git rev-parse HEAD)
       - uses: actions/checkout@v2
       - name: setup cache
         uses: ./.github/actions/cache
@@ -28,4 +28,4 @@ jobs:
     needs: [setup-deps]
     steps:
       - run: echo $(git rev-parse HEAD)
-      - run: echo "${{ steps.setup_deps.outputs.MASTER_HASH }}"
+      - run: echo ${{ steps.setup_deps.outputs.MASTER_HASH }}
